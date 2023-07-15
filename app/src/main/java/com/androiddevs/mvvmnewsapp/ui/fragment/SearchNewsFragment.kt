@@ -36,6 +36,8 @@ class SearchNewsFragment: BaseNewsFragment(R.layout.fragment_search_news) {
                 editable?.let {
                     if (editable.toString().isNotEmpty()) {
                         viewModel.searchNews(editable.toString())
+                    } else {
+                        newsAdapter.differ.submitList(null)
                     }
                 }
             }
