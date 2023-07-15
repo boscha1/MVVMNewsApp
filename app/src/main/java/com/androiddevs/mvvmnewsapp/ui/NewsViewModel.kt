@@ -9,6 +9,8 @@ import com.androiddevs.mvvmnewsapp.repository.NewsRepository
 import com.androiddevs.mvvmnewsapp.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NewsViewModel(
     private val newsRepository: NewsRepository
@@ -55,6 +57,9 @@ class NewsViewModel(
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
+                resultResponse.articles.map {
+                    it.publishedAt = formatDate(it.publishedAt)
+                }
                 return Resource.Success(resultResponse)
             }
         }
@@ -64,9 +69,20 @@ class NewsViewModel(
     private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
+                resultResponse.articles.map {
+                    it.publishedAt = formatDate(it.publishedAt)
+                }
                 return Resource.Success(resultResponse)
             }
         }
         return Resource.Error(response.message())
+    }
+
+    private fun formatDate(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
+
+        val date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
     }
 }
