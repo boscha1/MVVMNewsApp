@@ -1,4 +1,4 @@
-package com.androiddevs.mvvmnewsapp.ui.adapters
+package com.androiddevs.mvvmnewsapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.androiddevs.mvvmnewsapp.R
-import com.androiddevs.mvvmnewsapp.ui.models.Article
+import com.androiddevs.mvvmnewsapp.models.Article
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_article_preview.view.*
 
@@ -35,6 +35,7 @@ class NewsAdapter: RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     override fun getItemCount() = differ.currentList.size
 
+    // binds the data of the corresponding article to the views inside the ArticleViewHolder
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = differ.currentList[position]
         holder.itemView.apply {
