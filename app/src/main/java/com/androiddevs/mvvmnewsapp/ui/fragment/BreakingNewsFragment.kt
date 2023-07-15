@@ -23,18 +23,18 @@ class BreakingNewsFragment: BaseNewsFragment(R.layout.fragment_breaking_news) {
         viewModel.breakingNewsLiveData.observe(viewLifecycleOwner, Observer {response ->
             when (response) {
                 is Resource.Success -> {
-                    hideProgressBar()
+                    hideProgressBar(paginationProgressBar)
                     response.data?.let {newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles)
                     }
                 }
                 is Resource.Error -> {
-                    hideProgressBar()
+                    hideProgressBar(paginationProgressBar)
                     response.message?.let { message ->
                         Log.e(TAG, "An error occurred: $message")
                     }
                 }
-                is Resource.Loading -> showProgressBar()
+                is Resource.Loading -> showProgressBar(paginationProgressBar)
             }
         })
     }
@@ -46,15 +46,6 @@ class BreakingNewsFragment: BaseNewsFragment(R.layout.fragment_breaking_news) {
             layoutManager = LinearLayoutManager(activity)
         }
     }
-
-    private fun hideProgressBar() {
-        paginationProgressBar.visibility = View.INVISIBLE
-    }
-
-    private fun showProgressBar() {
-        paginationProgressBar.visibility = View.VISIBLE
-    }
-
     companion object {
         const val TAG = "BreakingNewsFragment"
     }
